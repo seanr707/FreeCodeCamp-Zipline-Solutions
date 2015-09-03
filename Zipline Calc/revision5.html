@@ -1,0 +1,28 @@
+<nav class="navbar navbar-default navbar-fixed-top header">
+  <div class="container text-center">
+    <h2>FreeCodeCamp Calculator</h2>
+  </div>
+</nav>
+<div class="space"></div>
+<!-- Main section for setting up Angular -->
+<div class="text-center" ng-app="calcApp" ng-controller="calcCtrl">
+  <div class="calc container">
+    <div class="display container text-center input-group">
+      <input class="form-control" value="{{ display }}" disabled>
+      <span class="input-group-addon" ng-show="mem[1]">{{ mem[1] }}</span>
+    </div>
+    <!-- Angular generates buttons in 3 sections -->
+    <div class="buttons">
+      <div class="row top">
+        <button class="norm btn btn-danger" ng-repeat="item in top" ng-click="item.func(item.val)">{{ item.disp }}</button>
+      </div>
+      <div class="row main">
+        <button class="norm col-md-1 btn btn-default text-right" ng-repeat="num in nums" ng-click="pressNum(num)" id="{{ num }}">{{ num }}</button>
+        <button class="bottom btn btn-default" ng-repeat="num in bottom" ng-click="pressNum(num)">{{ num }}</button>
+      </div>
+      <div class="side row">
+        <button class="norm btn btn-primary" ng-repeat="item in side" ng-click="item.func(item.val)" id="{{ item.id }}">{{ item.disp }}</button>
+      </div>
+    </div>
+  </div>
+</div>

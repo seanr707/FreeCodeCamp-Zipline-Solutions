@@ -1,0 +1,43 @@
+<body ng-app="wikiApp" ng-controller='wikiCtrl' ng-click="escapeClick()"> 
+  
+  <nav class='user-input navbar navbar-fixed-top text-center'>
+    <!-- Our Search Input -->
+    <div class='submit-box input-group container'>
+      <div class="input-group">
+      <input id="txt" class='form-control' role="combobox" type="search" placeholder="Search..." aria-describedly="delText" ng-model="search" ng-keyup="suggest()">
+        <!-- Clears text (Hidden if text empty) -->
+        <span class="input-group-addon" id="delText" ng-show="search" ng-click="clearText()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </span>
+      <span class="input-group-btn">
+        <button class='btn btn-primary' role="search" ng-click="searchClick(search)">Search</button>
+      </span>
+      </div>
+    </div>
+    <!-- Hidden Text suggestion Box -->
+    <select multiple class="dropdown" ng-show="drop">
+      <option ng-repeat="result in dropResults" ng-module="opt" ng-click="changeText( result.title)">{{ result.title }}</li>
+    </select>
+  </nav>
+
+  <!-- Where our results are display -->
+  <div class='app text-center'>
+    <div class="random-div">
+      <a target="_blank" ng-href="{{ randomLink }}" ng-click="random()">
+        <button class="btn btn-info">Random Wiki</button>
+      </a>
+    </div>
+    <h2>{{ title }}</h2>
+    <div class='results'>
+      <ul class="list-unstyled">
+        <li ng-repeat="result in results">
+          <a target="_blank" ng-href="https://en.wikipedia.org/wiki/{{ result.title }}">
+            <button class='result nofloat'>
+              {{ result.title }}
+            </button>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,300 @@
+// Size of each corner (and other elements)
+$size: 200px;
+// Size of two corners together (used for widths of whole game)
+$sizeb: $size * 2.175;
+// Make full circle
+$radius: 100%;
+// More efficient for buttons but couldn't figure out how to loop
+// $colors: (red: red, blue: blue, green: green, yellow: yellow,);
+// These colors are more pleasing as buttons than normal ('red') etc.
+$red: #8f0e17; // Purplish red
+$blue: #194a9f; // Purplish blue
+$green: #01b74a; // Bluish green
+$yellow: #ccb817; // Goldish yellow
+$gray: #273335; // Bluish gray
+$margin: 2%;
+
+// Centers item
+@mixin center($top, $bottom) {
+  margin: #{$top}% auto #{$bottom}% auto;
+}
+
+// For corner buttons
+@mixin buttonMargins($num) {
+  // Had #{$num}% but Koala gave an error
+  /* #{$num}% */
+  margin: $num $num/2 $num $num/2;
+}
+
+@mixin textBorder($bcolor) {
+  text-shadow: -1px 0 $bcolor, 0 1px $bcolor, 1px 0 $bcolor, 0 -1px $bcolor;
+}
+
+// For Play, Reset and Strict buttons
+@mixin frontButtons($color) {
+  $color: lighten($color, 5%);
+  $dark: darken($color, 10%);
+  $width: 50px;
+  bottom: 0px;
+  color: darken(white, 2%);
+  // Text outline;
+  @include textBorder($dark);
+  margin: 2% 2% 0 2%;
+  width: $width;
+  display: inline-block;
+  border: solid 1px darken($color, 20%);
+  background: linear-gradient($color, darken($color, 5%));
+  // Only box-shadow on hover
+  // box-shadow: 0 0 1px black;
+  border-radius: 1px;
+  font-size: 14px;
+  &:hover {
+    $color: lighten($color, 10%);
+    background: linear-gradient($color, darken($color, 5%));
+    box-shadow: 0 1px 2px black;
+  }
+
+  &:disabled {
+    $color: lighten(gray, 5%);
+    $dark: darken($color, 10%);
+    @include textBorder($dark);
+    border: solid 1px darken($color, 20%);
+    background: linear-gradient($color, darken($color, 5%));
+  }
+}
+
+// For creating background circles as boards
+@mixin mkBackdrop($s, $z) {
+  background: $gray;
+  border-radius: $radius;
+  width: $s;
+  height: $s;
+  padding: 1%;
+  z-index: $z;
+}
+
+// For creating colored corner buttons
+@mixin createButton($color, $corner) {
+  $ul: 0;
+  $ur: 0;
+  $br: 0;
+  $bl: 0;
+
+  // Rounds specific corner
+  @if $corner == 0 {
+    $ul: $radius;
+  } @else if $corner == 1 {
+    $ur: $radius;
+  } @else if $corner == 2 {
+    $br: $radius;
+  } @else if $corner == 3 {
+    $bl: $radius;
+  }
+
+  // Used with plain ('red', 'blue', etc.)
+  // background: darken($color, 10%);
+  background: $color;
+  border: solid 2px $gray;
+  border-radius: $ul $ur $br $bl;
+
+  // For lighting it
+  &.lighten {
+    // background: lighten($color, 1%);
+    background: lighten($color, 5%);
+  }
+}
+
+
+
+// Large board background
+.backdrop {
+  @include mkBackdrop($sizeb, 1);
+  @include center(2, 0);
+  padding: 0.5%;
+  box-shadow: 0 0 5px black;
+}
+
+
+// Small background for front
+.frontdrop {
+  @include mkBackdrop($size, 9993);
+  box-shadow: 0 0 3px black;
+  position: absolute;
+  margin: $size / 2;
+}
+// Front circle with buttons on it to play and count
+.minifront {
+  border-radius: $radius;
+  box-shadow: 0 0 3px black;
+  width: $size * .99;
+  height: $size * .99;
+  background: lighten(gray, 30%);
+  @include center(0, 0);
+}
+// For pairing on-off light and button together
+.btn-section {
+  display: inline-block;
+}
+.title {
+  @include center(8, 0);
+  color: lighten(black, 10%);
+  text-align: center;
+  font-size: 40px;
+  font-family: Impact;
+
+  // Adjusted for small 'R' symbol
+  & .trademark {
+    font-size: 18px;
+    width: 18px;
+    display: inline-block;
+  }
+}
+// Alarm Clock style for counting turns
+.count{
+  // Inside to outside radial
+  background: radial-gradient(darken(red, 35%), darken(red, 40%));
+  border: solid 1px darken(gray, 50%);
+  border-radius: 2px;
+  color: red;
+  // @include textBorder(darken(red, 35%));
+  // font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  padding: 2px;
+  width: 35px;
+  @include center(2, 0);
+}
+// Row of Play buttons
+.row {
+  @include center(4, 0);
+  padding: 2%;
+  width: 85%;
+}
+.play {
+  @include frontButtons(green);
+}
+.strict {
+  @include frontButtons(darken(yellow, 15%));
+}
+// Indicator lights
+.light {
+  margin: 0 auto 6px auto;
+  $lSize: 6px;
+  height: $lSize;
+  width: $lSize;
+  border: solid 1px darken($gray, 10%);
+  border-radius: $radius;
+  background: $gray;
+
+  &.on {
+    &.play-indicator {
+      $color: lighten(green, 20%);
+      background: radial-gradient($color, darken($color, 10%));
+    }
+    &.strict-indicator {
+      $color: lighten(red, 5%);
+      background: radial-gradient($color, darken($color, 10%));
+    }
+    
+  }
+}
+.reset {
+  @include frontButtons(darken(red, 10%));
+}
+
+// Used for centering four big buttons
+.buttons {
+  @include center(0, 0);
+  width: $sizeb;
+  height: $size * 2;
+  padding: 1%;
+}
+
+// Used to divide buttons into two rows (top and bottom)
+.arow {
+  height: $size;
+  @include center(0, 0);
+}
+.top {
+  margin-bottom: $margin;
+  border-radius: $radius $radius 0 0;
+}
+.bottom {
+  margin-top: $margin;
+  border-radius: 0 0 $radius $radius;
+}
+
+// Generic class for all four buttons
+.color {
+  height: $size;
+  width: $size;
+  z-index: 1;
+  display: inline-block;
+  @include buttonMargins($margin);
+}
+.red {
+  @include createButton($red, 0);
+}
+.yellow {
+  @include createButton($yellow, 1);
+}
+.blue {
+  @include createButton($blue, 2);
+}
+.green {
+  @include createButton($green, 3);
+}
+
+
+// Invisible blocker when CPU is going
+.cover {
+  background: none;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+// Background for .win
+.blanket {
+  background: none;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+}
+// Win popup
+.win {
+  max-width: 20%;
+  color: $gray;
+  box-shadow: 0 0 3px black;
+  text-align: center;
+  border: solid 1px $gray;
+  background: white;
+  @include center(15, 0);
+}
+
+
+// Used for fixing an issue with spacing first item in Mini-Front
+.spacer {
+  @include center(1, 0);
+  width: 4px;
+  height: 4px;
+}
+
+
+body {
+  // Wooeden panel bg
+  background-image: url("http://www.zastavki.com/pictures/1680x1050/2010/Creative_Wallpaper_Wooden_light_tree_021777_.jpg");
+  //background-image: url('stripes.jpg');
+  background-position: fixed;
+  background-size: fill;
+  margin: 0;
+  padding: 0;
+  font-family: helvetica;
+  font-weight: none;
+}

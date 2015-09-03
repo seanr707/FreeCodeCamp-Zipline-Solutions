@@ -1,0 +1,16 @@
+<div ng-app='wikiApp' class="container">
+  <div class='app text-cneter' ng-controller='wikiCtrl'>
+    <div class='user-input'>
+      <input class='submit-box' ng-model="search">
+      <button class='btn btn-default' role="submit" ng-click="searchClick()">Hello</button>
+    </div>
+    <div class='results'>
+      <ul class="list-unstyled" ng-repeat="result in results">
+        <a target="_blank" href="https://en.wikipedia.org/wiki/{{ result.title.replace(' ', '_') }}">
+          <li>{{ result.title }}</li>
+        </a>
+      </ul>
+    </div>
+  </div>
+  <div ng-view></div>
+</div>

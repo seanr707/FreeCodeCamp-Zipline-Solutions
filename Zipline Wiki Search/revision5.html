@@ -1,0 +1,42 @@
+<body ng-app="wikiApp" ng-controller='wikiCtrl'> 
+  <nav class='user-input navbar navbar-static-top'>
+    <div class='submit-box input-group container'>
+      <span class="input-group-btn">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+          </button>
+          <select multiple class="dropdown-menu">
+          </select>
+        </div>
+      </span>
+      <input id="autocomplete" class='form-control' role="combobox" placeholder="Search..." ng-model="search" ng-keypress="suggest()">
+        <span class="input-group-btn">
+        <button class='btn btn-primary' role="search" ng-click="searchClick()">Search</button>
+      </span>
+    </div>
+    <div class="dropdown" ng-show="search">
+      <ul class="list-unstyled">
+        <li ng-repeat="result in dropResults">{{ result.title }}</li>
+      </ul>
+    </div>
+    <select multiple class="form-control" ng-show"drop">
+    </select>
+  </nav>
+
+  <div class='app text-center'>
+    <h2>{{ title }}</h2>
+    <div class='results'>
+      <ul class="list-unstyled">
+        <li ng-repeat="result in results">
+          <a target="_blank" href="https://en.wikipedia.org/wiki/{{ result.title }}">
+            <button class='result nofloat'>
+              {{ result.title }}
+            </button>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id='log'></div>
+</body>
